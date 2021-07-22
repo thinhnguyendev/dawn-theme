@@ -1,178 +1,92 @@
-{%- comment -%} VERSION: 0.0.3 Please do not delete this line. {%- endcomment -%}
 {%- capture bc_layout -%}
 {%- case layout -%}
 {%- when 'productGridItemHtml' -%}
-{% raw %}
-<div class="boost-pfs-filter-product-item boost-pfs-filter-product-item-grid {{gridWidthClass}}{{soldOutClass}}{{saleClass}} {{itemActiveSwapClass}}">
-    <div class="boost-pfs-filter-product-item-inner">
-        <div class="boost-pfs-filter-product-item-image">
-            {{itemImages}}
-            <div class="boost-pfs-filter-product-item-label">{{itemLabels}}{{itemTagLabels}}</div>
-        </div>
-
-        <div class="boost-pfs-filter-product-bottom">
-          <div class="boost-pfs-filter-product-bottom-inner">
-            <a href="{{itemUrl}}#" class="boost-pfs-filter-product-item-title">{{itemTitle}}</a>
-            {{itemVendor}}
-            {{itemReviews}}
-            {{itemPrice}}
-            {{itemColorSwatches}}
-            {{itemSizeSwatches}}
+{%- raw -%}
+<div class="grid__item">
+  <div class="card-wrapper">
+    <a href="{{itemUrl}}" class="full-unstyled-link">
+      <span class="visually-hidden">{{itemTitle}}</span>
+      <div class="card card--product {{cardProductClass}}" tabindex="-1">
+        <div class="card__inner">
+          {{itemImages}}
+          <div class="card__badge">
+            {{itemSoldOut}}
+            {{itemSale}}
           </div>
         </div>
-    </div>
-</div>
-{% endraw %}
-{%- when 'productListItemHtml' -%}
-{% raw %}
-<div class="boost-pfs-filter-product-item boost-pfs-filter-product-item-list {{soldOutClass}}{{saleClass}} {{itemActiveSwapClass}}">
-  <div class="boost-pfs-filter-product-item-inner">
-    <div class="boost-pfs-filter-product-item-image">
-        {{itemImages}}
-        <div class="boost-pfs-filter-product-item-label">{{itemLabels}}{{itemTagLabels}}</div>
-    </div>
-    <div class="boost-pfs-filter-product-bottom">
-      <div class="boost-pfs-filter-product-bottom-inner">
-        <a href="{{itemUrl}}" class="boost-pfs-filter-product-item-title">{{itemTitle}}</a>
-        {{itemVendor}}
-        {{itemReviews}}
-        {{itemPrice}}
-        <p class="boost-pfs-filter-des">{{itemDescription}}</p>
-        {{itemColorSwatches}}
-        {{itemSizeSwatches}}
       </div>
-    </div>
+      <div class="card-information">
+        <div class="card-information__wrapper">
+          {{itemVendor}}
+          <span class="card-information__text h5">{{itemTitle}}</span>
+          {{itemReviews}}
+          {{itemPrice}}
+        </div>
+      </div>
+    </a>
   </div>
 </div>
-{% endraw %}
-{%- when 'productListPlaceholderHtml' -%}
-{% raw %}
-<div class="boost-pfs-filter-product-item boost-pfs-filter-product-item-list {{class.filterProductSkeleton}}">
-  <div class="boost-pfs-filter-product-item-image">
-    <div class="{{class.filterProductSkeleton}}-image" style="padding-top: {{paddingTop}}%"></div>
-  </div>
-  <div class="boost-pfs-filter-product-bottom">
-    <div class="boost-pfs-filter-product-bottom-inner">
-    <a href="#" class="boost-pfs-filter-product-item-title"><span class="boost-pfs-filter-skeleton-text boost-pfs-filter-skeleton-width4"></span></a>
-    <p class="boost-pfs-filter-product-item-vendor"><span class="boost-pfs-filter-skeleton-text boost-pfs-filter-skeleton-width1"></span></p>
-    <p class="boost-pfs-filter-product-item-price"><span class="boost-pfs-filter-skeleton-text boost-pfs-filter-skeleton-width2"></span></p>
-    <p class="boost-pfs-filter-des">
-      <span class="boost-pfs-filter-skeleton-text" style="width: 100%"></span><br />
-      <span class="boost-pfs-filter-skeleton-text" style="width: 100%"></span><br />
-      <span class="boost-pfs-filter-skeleton-text" style="width: 100%"></span><br />
-      <span class="boost-pfs-filter-skeleton-text" style="width: 30%"></span>
-    </p>
-    </div>
-  </div>
-</div>
-{% endraw %}
+{%- endraw -%}
 
 {%- when 'soldOutLabelHtml' -%}
-{% assign show_product_label_image = section.settings.show_product_label_image %}
-{% assign product_label_image_sold_out = section.settings.product_label_image_sold_out %}
-
-<span class="soldout boost-pfs-filter-label">
-{% if show_product_label_image %}
-<img src="{{ product_label_image_sold_out | img_url: 'small' }}" alt="{{ product_label_image_sold_out.alt }}" />
-{% else %}
-{{ label_soldout | default: 'Sold Out' }}
-{% endif %}
+<span class="badge badge--bottom-left color-[[soldOutBadgeClass]]" aria-hidden="true">
+  {{ 'products.product.sold_out' | t }}
 </span>
 
 {%- when 'saleLabelHtml' -%}
-{% assign show_product_label_image = section.settings.show_product_label_image %}
-{% assign product_label_image_sale = section.settings.product_label_image_sale %}
-{% assign show_sale_percent = section.settings.show_sale_percent %}
-
-<span class="sale boost-pfs-filter-label">
-  {% if show_product_label_image %}
-  <img src="{{ product_label_image_sale | img_url: 'small' }}" alt="{{ product_label_image_sale.alt }}" />
-  {% else %}
-    {% if show_sale_percent %}
-      {% raw %}
-        {{salePercent}}
-      {% endraw %}
-    {% else %}
-    {{ label_sale | default: 'Sale' }}
-    {% endif %}
-  {% endif %}
+<span class="badge badge--bottom-left color-[[saleBadgeClass]]" aria-hidden="true">
+  {{ 'products.product.on_sale' | t }}
 </span>
 
-
-{%- when 'tagLabelHtml' -%}
-{% raw %}
-<span class="tag boost-pfs-filter-label {{labelTag}}" >{{labelTag}}</span>
-{% endraw %}
-
 {%- when 'vendorHtml' -%}
-{% raw %}
-<p class="boost-pfs-filter-product-item-vendor">{{itemVendorLabel}}</p>
-{% endraw %}
+<span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+<div class="caption-with-letter-spacing light">[[itemVendorLabel]]</div>
 
 {%- when 'previousActiveHtml' -%}
-{% raw %}
-<li><a href="{{itemUrl}}">&larr;</a></li>
-{% endraw %}
-
-
-{%- when 'previousDisabledHtml' -%}
-<li class="boost-pfs-filter-pagination-disabled"><span>&larr;</span></li>
+<li>
+  <a href="[[itemUrl]]" class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce">
+    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
+        fill="currentColor">
+      </path>
+    </svg>
+  </a>
+</li>
 
 {%- when 'nextActiveHtml' -%}
-{% raw %}
-<li><a href="{{itemUrl}}">&rarr;</a></li>
-{% endraw %}
-
-{%- when 'nextDisabledHtml' -%}
-<li class="boost-pfs-filter-pagination-disabled"><span>&rarr;</span></li>
+<li>
+  <a href="[[itemUrl]]" class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce">
+    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
+        fill="currentColor">
+      </path>
+    </svg>
+  </a>
+</li>
 
 {%- when 'pageItemHtml' -%}
-{% raw %}
-<li><a href="{{itemUrl}}">{{itemTitle}}</a></li>
-{% endraw %}
+<li><a href="[[itemUrl]]" class="pagination__item link">[[itemTitle]]</a></li>
 
 {%- when 'pageItemSelectedHtml' -%}
-{% raw %}
-<li><span class="boost-pfs-filter-pagination-active">{{itemTitle}}</span></li>
-{% endraw %}
+<li><span class="pagination__item pagination__item--current" aria-current="page">[[itemTitle]]</span></li>
 
 {% when 'pageItemRemainHtml' %}
-{% raw %}
-<li><span>{{itemTitle}}</span></li>
-{% endraw %}
+<li><span class="pagination__item">[[itemTitle]]</span></li>
 
 {%- when 'paginateHtml' -%}
-{% raw %}
-<ul>{{previous}}{{pageItems}}{{next}}</ul>
-{% endraw %}
+<div class="pagination-wrapper">
+  <nav class="pagination" role="navigation" aria-label="Pagination">
+    <ul class="pagination__list list-unstyled" role="list">[[previous]][[pageItems]][[next]]</ul>
+  </nav>
+</div>
 
 {%- when 'sortingHtml' -%}
-{% raw %}
-<button class="boost-pfs-filter-top-sorting-wrapper"><span><span> {% assign temp = 'collections.sorting.title' | t  %} {% unless temp contains 'translation missing'  %} {{ temp }} {% else %} Sorting {% endunless %}, </span></span></button><ul class="boost-pfs-filter-filter-dropdown">{{sortingItems}}</ul>
-{% endraw %}
-
-{%- when 'showLimitHtml' -%}
-{% raw %}
-<label> Show </label><select class="boost-pfs-filter-filter-dropdown">{{showLimitItems}}</select>
-{% endraw %}
-
-{%- when 'breadcrumbHtml' -%}
-{% raw %}
-<a href="/"> Home </a> {{breadcrumbDivider}} {{breadcrumbItems}}
-{% endraw %}
-
-{%- when 'breadcrumbDivider' -%}
-<span class="divider">/</span>
-
-{%- when 'breadcrumbItemLink' -%}
-{% raw %}
-<a href="{{itemLink}}">{{itemTitle}}</a>
-{% endraw %}
-
-{%- when 'breadcrumbItemSelected' -%}
-{% raw %}
-<span>{{itemTitle}}</span>
-{% endraw %}
+<select name="sort_by" class="select__select collection-filters__sort" id="SortBy" aria-describedby="a11y-refresh-page-message">[[sortingItems]]</select>
+<svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+</path></svg>
 
 {%- endcase -%}
 {%- endcapture -%}
