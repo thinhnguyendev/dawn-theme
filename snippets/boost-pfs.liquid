@@ -60,9 +60,11 @@
     {% if shop.metafields.bc-sf-filter.settings != blank %}
     settings: {{ shop.metafields.bc-sf-filter.settings | strip_html }},
     {% endif %}
-    {% if shop.metafields.pfs-swatch-settings != blank %}
-    swatch_settings: {{ shop.metafields.pfs-swatch-settings | json | strip_html }},
-    {% endif %}
+    {% if shop.metafields.pfs-swatch-settings.type != nil %}
+swatch_settings: {{shop.metafields.pfs-swatch-settings.value | json | strip_html }},
+{% elsif shop.metafields.pfs-swatch-settings != blank  %}
+swatch_settings: {{shop.metafields.pfs-swatch-settings | json | strip_html }},
+{% endif %}
   };
   function mergeObject(obj1, obj2){
     var obj3 = {};

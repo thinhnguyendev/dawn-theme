@@ -1,7 +1,11 @@
 {%- comment -%} VERSION: 0.0.3 Please do not delete this line. {%- endcomment -%}
 {%- liquid
 	assign products_per_page = section.settings.products_per_page
-	assign boost_translations = shop.metafields.boostpfs-settings.labelTranslations
+	if shop.metafields.boostpfs-settings.labelTranslations.type != nil 
+assign boost_translations = shop.metafields.boostpfs-settings.labelTranslations.value
+else
+assign boost_translations = shop.metafields.boostpfs-settings.labelTranslations
+endif
 	assign current_locale = request.locale.iso_code
 	assign primary_locale = current_locale
 	for locale in shop.published_locales
